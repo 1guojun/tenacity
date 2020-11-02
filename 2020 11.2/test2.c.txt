@@ -1,0 +1,30 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define N 9
+typedef struct node{ //声明结果数组
+int data;
+struct node * next;
+}ElemSN;
+ElemSN *  Createlink(int a[]){
+int i;
+ElemSN * h=NULL, * p;
+for(i = N-1; i >=0; i--){
+p=(ElemSN *)malloc(sizeof(ElemSN));//创建node
+p->data = a[i];                    
+p->next = h;  //已经创建好的链表的头指针给了新创建的node 
+h = p;             //把当前的node作为链表的头指针
+}
+return h;
+}
+void printlink(ElemSN * h){
+   ElemSN * p;
+   for(p=h;p;p=p->next){
+   printf("%5d",p->data);
+   }
+}
+int main(void){
+int a[N]={1,2,3,4,5,6,7,8,9};
+ElemSN * head;
+head=Createlink(a);
+printlink(head);
+}
