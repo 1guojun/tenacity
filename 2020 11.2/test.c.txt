@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define N 8
+typedef struct Node{
+int date;
+struct Node *next;
+}ElenSN;
+ElenSN *CreateLink(int a[])
+{
+ElenSN *h,*p,*t;
+h=NULL;
+for(int i=0;i<N;++i){
+p=(ElenSN*)malloc(sizeof(ElenSN));
+p->date=a[i];
+p->next=NULL;
+if(!h) h=t=p;
+else  t=t->next=p;}
+return h;}
+
+void printfLink (ElenSN*h){
+ElenSN *p;
+for(p=h;p;p=p->next){
+	printf  ("%d\n",p->date);}
+}
+int main(void)
+{int a[N]={3,2,5,8,4,7,6,9};
+ElenSN*head;
+//正向建链
+head=CreateLink(a);
+//输出
+printfLink(head);
+return 0;
+}
