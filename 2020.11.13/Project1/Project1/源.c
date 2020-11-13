@@ -5,7 +5,7 @@ int main()
 {
 	int a, b,c;
 	scanf("%d%d", &a, &b);
-	while (c = a%b)//当C=0时余数就求出了
+	while (c = a%b)        //当C=0时余数就求出来了
 	{
 		a = b;
 		b = c;
