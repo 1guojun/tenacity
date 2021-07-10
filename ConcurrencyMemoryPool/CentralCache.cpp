@@ -44,6 +44,7 @@ Span* CentralCache::GetOneSpan(SpanList& list, size_t size)
 size_t CentralCache::FetchRangeObj(void*& start, void*& end, size_t n, size_t size)
 {
 	size_t i = SizeClass::Index(size); //À„Œª÷√
+	
 	_spanLists[i].Lock();
 
 	Span* span = GetOneSpan(_spanLists[i], size);
