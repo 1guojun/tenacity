@@ -23,7 +23,7 @@ Span* PageCache::NewSpan(size_t k)
 		span->_n = k;
 
 		{
-			//std::lock_guard<std::mutex> lock(_map_mtx);
+			std::lock_guard<std::mutex> lock(_map_mtx);
 			_idSpanMap[span->_pageId] = span;
 		}
 
