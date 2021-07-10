@@ -70,5 +70,5 @@ void ThreadCache::ListTooLong(FreeList& list, size_t size)
 	list.PopRange(start, end, batchNum); 
 
 	CentralCache::GetInstance()->ReleaseListToSpans(start, size);
-}
+} 
 
