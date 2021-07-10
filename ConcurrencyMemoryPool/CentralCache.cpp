@@ -45,8 +45,8 @@ size_t CentralCache::FetchRangeObj(void*& start, void*& end, size_t n, size_t si
 {
 	size_t i = SizeClass::Index(size); //算位置
 	
-	_spanLists[i].Lock();
-
+	//_spanLists[i].Lock();
+	std::lock_guard<std::mutex> lock(_spanLists[i]._mtx);
 	Span* span = GetOneSpan(_spanLists[i], size);
 
 	// 找到了一个有对象的span，有多少给多少
@@ -66,7 +66,7 @@ size_t CentralCache::FetchRangeObj(void*& start, void*& end, size_t n, size_t si
 	end = prev;
 	NextObj(prev) = nullptr;
 
-	_spanLists[i].Unlock();
+	//_spanLists[i].Unlock();
 
 	return j - 1;
 }
