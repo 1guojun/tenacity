@@ -65,7 +65,7 @@ Span* PageCache::NewSpan(size_t k)
 
 			// 改变切出来span的页号和span的映射关系
 			{
-				//std::lock_guard<std::mutex> lock(_map_mtx);
+				std::lock_guard<std::mutex> lock(_map_mtx);
 				for (PageID i = 0; i < k; ++i)
 				{
 					_idSpanMap[split->_pageId + i] = split;
@@ -88,7 +88,7 @@ Span* PageCache::NewSpan(size_t k)
 	// 按页号和span映射关系建立
 
 	{
-		//std::lock_guard<std::mutex> lock(_map_mtx);
+		std::lock_guard<std::mutex> lock(_map_mtx);
 		for (PageID i = 0; i < bigSpan->_n; ++i)
 		{
 			PageID id = bigSpan->_pageId + i;
@@ -114,17 +114,6 @@ Span* PageCache:: MapObjectToSpan(void* obj)
 		assert(false);
 		return  nullptr;
 	}
-
-	/*Span* span = _idSpanMap.get(id);
-	if (span != nullptr)
-	{
-		return span;
-	}
-	else
-	{
-		assert(false);
-		return nullptr;
-	}*/
 }
 
 void PageCache::ReleaseSpanToPageCache(Span* span)
@@ -132,8 +121,7 @@ void PageCache::ReleaseSpanToPageCache(Span* span)
 	if (span->_n >= NPAGES)
 	{
 		{
-			//std::lock_guard<std::mutex> lock(_map_mtx);
-			//_idSpanMap.erase(span->_pageId);
+			std::lock_guard<std::mutex> lock(_map_mtx);
 			_idSpanMap.erase(span->_pageId);
 		}
 		//利用PageID将地址算出
@@ -158,11 +146,6 @@ void PageCache::ReleaseSpanToPageCache(Span* span)
 			break;
 		}
 		Span* preSpan = ret->second;
-		/*Span* preSpan = _idSpanMap.get(preId);
-		if (preSpan == nullptr)
-		{
-			break;
-		}*/
 
 		// 如果前一个页的span还在使用中，结束向前合并
 		if (preSpan->_usecount != 0)
@@ -186,7 +169,7 @@ void PageCache::ReleaseSpanToPageCache(Span* span)
 
 		// 更新页之间映射关系
 		{
-			//std::lock_guard<std::mutex> lock(_map_mtx);
+			std::lock_guard<std::mutex> lock(_map_mtx);
 			for (PageID i = 0; i < preSpan->_n; ++i)
 			{
 				_idSpanMap[preSpan->_pageId + i] = span;
@@ -206,12 +189,7 @@ void PageCache::ReleaseSpanToPageCache(Span* span)
 		break;
 		}
 		Span*nextSpan = ret->second;
-		//Span* nextSpan = _idSpanMap.get(nextId);
-		//if (nextSpan == nullptr)
-		//{
-		//	break;
-		//}
-
+		
 		//Span* nextSpan = ret->second;
 		if (nextSpan->_usecount != 0)
 		{
@@ -229,7 +207,7 @@ void PageCache::ReleaseSpanToPageCache(Span* span)
 		span->_n += nextSpan->_n;
 
 		{
-			//std::lock_guard<std::mutex> lock(_map_mtx);
+			std::lock_guard<std::mutex> lock(_map_mtx);
 			for (PageID i = 0; i < nextSpan->_n; ++i)
 			{
 				_idSpanMap[nextSpan->_pageId + i] = span;
