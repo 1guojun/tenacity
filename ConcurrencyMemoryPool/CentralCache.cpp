@@ -44,8 +44,7 @@ Span* CentralCache::GetOneSpan(SpanList& list, size_t size)
 size_t CentralCache::FetchRangeObj(void*& start, void*& end, size_t n, size_t size)
 {
 	size_t i = SizeClass::Index(size); //À„Œª÷√
-
-	std::lock_guard<std::mutex> lock(_spanLists[i]._mtx);
+	_spanLists[i].Lock();
 
 	Span* span = GetOneSpan(_spanLists[i], size);
 
@@ -66,7 +65,7 @@ size_t CentralCache::FetchRangeObj(void*& start, void*& end, size_t n, size_t si
 	end = prev;
 	NextObj(prev) = nullptr;
 
-	//_spanLists[i].Unlock();
+	_spanLists[i].Unlock();
 
 	return j - 1;
 }
