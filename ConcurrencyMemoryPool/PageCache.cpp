@@ -103,11 +103,6 @@ Span* PageCache::NewSpan(size_t k)
 
 Span* PageCache:: MapObjectToSpan(void* obj)
 {
-
-	//std::lock_guard<std::mutex> lock(_map_mtx);
-
-	//std::lock_guard<std::recursive_mutex> lock(_mtx);
-
 	PageID id = (ADDRES_INT)obj >> PAGE_SHIFT;
 	auto ret = _idSpanMap.find(id);
 	if (ret != _idSpanMap.end())
