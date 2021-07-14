@@ -24,8 +24,6 @@ private:
 	SpanList _spanList[NPAGES]; //按页数映射
 	std::mutex _map_mtx;
 	std::unordered_map<PageID, Span*> _idSpanMap;
-	//TCMalloc_PageMap2<32 - PAGE_SHIFT> _idSpanMap;
-	//TCMalloc_PageMap1 _idSizeMap;
 
 	// tcmalloc 基数树  效率更高
 
